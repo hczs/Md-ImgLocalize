@@ -104,6 +104,7 @@ def file_replace_url(file_data, url_dict, file_name):
     images that will be downloaded later
     """
     for key, value in url_dict.items():
+        value = value.replace("\\", "/")
         file_data = file_data.replace(key, value)
         print(f"\nreplaced: {key}\nwith {value}\n on file {file_name}\n")
         logging.info(f"replaced: {key}\nwith: {value}\non file: {file_name}\n")
@@ -153,9 +154,9 @@ class MdImageLocal:
             # skip if no online link in this file
             if url_dict:
                 # Create a folder with md filename which contains images
-                create_folder(os.path.join(self.out_folder_path, filename[:-3] + ".assets"))
+                create_folder(os.path.join(self.out_folder_path, filename[:-3]))
                 # Specify img folder
-                url_dict = {key: os.path.join(filename[:-3] + ".assets", value) for key, value in url_dict.items()}
+                url_dict = {key: os.path.join(filename[:-3], value) for key, value in url_dict.items()}
                 # Edit the read content of each file, replacing the found imgs urls with local file names instead
                 edited_file_data = file_replace_url(file_data, url_dict, filename)
                 # Add url_dict to all_img_dict
